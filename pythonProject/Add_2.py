@@ -1,4 +1,4 @@
-from Open import lstData
+
 # Словарь для обработки массива - сравнение значений и передача в функцию
 testDict = {'Hlv1': ['=01', '=1', '= 1'], 'dels': ['=', '(', 'ЭЭЭ'],
             'HLv7': ['=7', '=07', '= 7'], 'HLv8': ['=8', '=08', '= 8'],
@@ -14,15 +14,18 @@ def add_num(lst, pos, r1, r2, r3):
 
 
 # Обработка массива из файла
-for i in range(0, len(lstData), 1):
-    for n, m in testDict.items():
-        if lstData[i] in m:
-            if n == 'Hlv1':
-                add_num(lstData, i, 7, 8, 1)
-            elif n == 'HLv7':
-                add_num(lstData, i, 1, 25, 1)
-                lstData[i + 18] = '\n' + str(lstData[i + 18])
-            elif n == 'HLv8':
-                add_num(lstData, i, 2, 5, 2)
-            elif n == 'HLv9':
-                add_num(lstData, i, 2, 9, 2)
+def adding(lstData):
+    for i in range(0, len(lstData), 1):
+        for n, m in testDict.items():
+            if lstData[i] in m:
+                if n == 'Hlv1':
+                    add_num(lstData, i, 7, 8, 1)
+                elif n == 'HLv7':
+                    add_num(lstData, i, 1, 25, 1)
+                    # Слишком длинная строка в файле получается, нужно пернести
+                    lstData[i + 18] = '\n' + str(lstData[i + 18])
+                elif n == 'HLv8':
+                    add_num(lstData, i, 2, 5, 2)
+                elif n == 'HLv9':
+                    add_num(lstData, i, 2, 9, 2)
+    return lstData

@@ -1,4 +1,4 @@
-from Open import lstData
+from Open_Write import lstData
 AddN = -3                                     #Значение поправки
 Hlv1 = ['=01', '=1','= 1']
 dels = ['=','(','ЭЭЭ']
