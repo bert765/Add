@@ -4,12 +4,12 @@ import pathlib
 
 def is_isx(file: pathlib.Path) -> bool:
     """Check if file is ISX and return True or False"""
-    data_file = open(file, 'r')
-    # Read first line in file and split it by commas. Cut first part out of line
     try:
+        data_file = open(file, 'r')
+        # Read first line in file and split it by commas. Cut first part out of line
         first_part = (data_file.readline()).split(',')[0]
     # Could have problems with decoding -> not ISX anyway
-    except UnicodeDecodeError:
+    except Exception:
         return False
     if first_part == ':::51':
         return True
@@ -37,10 +37,9 @@ def files_compare(file1: pathlib.Path, file2: pathlib.Path) -> bool:
 def dirs(main_dir: str, file: pathlib.Path) -> pathlib.Path:
     """return correct path for new directory
     and create directory if needed"""
-    try:
-        year_suffix = file.suffix[2:4]
-    except ValueError:
-        year_suffix = suffix_choice(file.suffixes)
+    year_suffix = suffix_choice(file.suffixes)
+    if year_suffix is None:
+        return None
     if int(year_suffix) <= 50:
         year_prefix = '20'
     else:
@@ -52,9 +51,9 @@ def dirs(main_dir: str, file: pathlib.Path) -> pathlib.Path:
     return dir_for_file
 
 
-def suffix_choice(var: list) -> int:
+def suffix_choice(var: list) -> str:
     """Func for a case of several suffixes in filename """
-    month = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c']
+    month = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'A', 'b', 'B', 'c', 'C']
     for v in var[::-1]:
         if len(v) != 4:
             var.remove(v)
@@ -62,9 +61,9 @@ def suffix_choice(var: list) -> int:
             if v[1] not in month or not v[2:4].isdigit():
                 var.remove(v)
     if len(var) == 1:
-        return var[0]
+        return var[0][2:4]
     else:
-        return var[-1]
+        return None
 
 
 def count(counter: int) -> int:
